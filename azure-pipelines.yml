@@ -107,7 +107,7 @@ stages:
     displayName: Deploy Development
     pool:
       name: 'ubuntu-latest'
-    environment: $(environment-dev)
+    #environment: $(environment-dev)
     strategy:
       runOnce:
         deploy:
