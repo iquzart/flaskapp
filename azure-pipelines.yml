@@ -109,8 +109,8 @@ stages:
   jobs:
   - deployment: Development
     displayName: Deploy Development
-    pool:
-      name: $(vmImageName)
+    #pool:
+    #  name: $(vmImageName)
     environment: $(environment-dev)
     strategy:
       runOnce:
