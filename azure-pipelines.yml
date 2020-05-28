@@ -25,7 +25,7 @@ trigger:
 pr: none
 
 variables:
-#- group: FlaskApp # Variable Group Name
+- group: FlaskApp # Variable Group Name
 
 - name: tag
   value:  $(Build.SourceBranchName)-$(GitShortSha)
@@ -52,7 +52,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImageName: 'ubuntu-18.04'
+      vmImageName: 'ubuntu-latest'
 
     steps:
     - checkout: self
@@ -106,7 +106,7 @@ stages:
   - deployment: Development
     displayName: Deploy Development
     pool:
-      name: 'ubuntu-18.04'
+      name: 'ubuntu-latest'
     environment: $(environment-dev)
     strategy:
       runOnce:
@@ -122,7 +122,7 @@ stages:
 
           - task: AzureWebAppContainer@1
             inputs:
-              azureSubscription: 'Azure Pass - Sponsorship(a220637b-04dd-4cb8-b8bb-15b0043ffd17)'
-              appName: 'iquzart-flaskapp'
+              azureSubscription: '$(azure-subscription)'
+              appName: '$(webapp-name)'
               containers: '$(imageRepository):$(tag)'
 
