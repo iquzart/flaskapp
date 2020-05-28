@@ -13,7 +13,7 @@ trigger:
     #include:
     exclude:
     - chart/* 
-    - pipeline.yml
+    - azure-pipelines.yml
     - README.md
   #tags:
     #include:
@@ -30,6 +30,10 @@ variables:
 - name: tag
   value:  $(Build.SourceBranchName)-$(GitShortSha)
 
+# Agent VM image name
+- name: vmImageName
+  value: 'ubuntu-latest'
+
 - name: containerRegistryServiceConnection
   value: 'Docker Hub'
 
@@ -40,7 +44,7 @@ variables:
   value: 'dev-XXXXX'
 
 - name: environment-prod
-  value: 'XXXXXXX'
+  value: 'prod-XXXX'
 
   
 
@@ -52,7 +56,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImageName: 'ubuntu-latest'
+      vmImageName: $(vmImageName)
 
     steps:
     - checkout: self
@@ -105,24 +109,23 @@ stages:
   jobs:
   - deployment: Development
     displayName: Deploy Development
-    pool:
-      name: 'ubuntu-latest'
+    #pool:
+    #  name: $(vmImageName)
     environment: $(environment-dev)
     strategy:
       runOnce:
         deploy:
           steps:
-
           - task: DownloadPipelineArtifact@2
             inputs:
               artifact: 'drop'
                           
-          - script: tag=`cat $(Pipeline.Workspace)/variables/tag` && echo "##vso[task.setvariable variable=tag]$tag"
+          - script: tag=`cat $(Pipeline.Workspace)/tag` && echo "##vso[task.setvariable variable=tag]$tag"
             displayName: Set the Git Short SHA as an environment variable
 
           - task: AzureWebAppContainer@1
+            displayName: 'Deploy Azure Web App : {{ webapp-name }}'
             inputs:
-              azureSubscription: 'Azure Pass - Sponsorship(a220637b-04dd-4cb8-b8bb-15b0043ffd17)'
-              appName: 'iquzart-flaskapp'
-              containers: 'diquzart/flaskapp:$(tag)'
-
+              azureSubscription: $(azure-subscription)
+              appName: $(webapp-name)
+              containers: $(imageRepository):$(tag)
