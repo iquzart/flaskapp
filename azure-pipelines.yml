@@ -126,8 +126,6 @@ stages:
           - task: AzureWebAppContainer@1
             displayName: 'Deploy Azure Web App : {{ webapp-name }}'
             inputs:
-              #azureSubscription: $(azure-subscription)
-              azureSubscription: 'Azure Pass - Sponsorship'
-              appName: 'iquzart-flaskapp'
-              #appName: $(webapp-name)
+              azureSubscription: $(azure-subscription)
+              appName: $(webapp-name)
               containers: $(imageRepository):$(tag)
