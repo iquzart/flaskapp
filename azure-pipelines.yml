@@ -40,7 +40,7 @@ variables:
   value: 'dev-XXXXX'
 
 - name: environment-prod
-  value: 'XXXXXXX'
+  value: 'prod-XXXX'
 
   
 
@@ -124,5 +124,5 @@ stages:
             inputs:
               azureSubscription: 'Azure Pass - Sponsorship(a220637b-04dd-4cb8-b8bb-15b0043ffd17)'
               appName: 'iquzart-flaskapp'
-              containers: 'diquzart/flaskapp:$(tag)'
+              containers: '$(imageRepository):$(tag)'
 
