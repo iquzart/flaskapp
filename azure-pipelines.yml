@@ -52,7 +52,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImageName: 'ubuntu-latest'
+      vmImageName: 'ubuntu-18.04'
 
     steps:
     - checkout: self
@@ -106,7 +106,7 @@ stages:
   - deployment: Development
     displayName: Deploy Development
     pool:
-      name: 'ubuntu-latest'
+      name: 'ubuntu-18.04'
     environment: $(environment-dev)
     strategy:
       runOnce:
